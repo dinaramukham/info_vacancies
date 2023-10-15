@@ -43,7 +43,7 @@ def get_course(currency='USD'):
 
 
 def get_translet(data, key):
-    for el in data:
+    for el in range(len(data) ) :
         if data[el]['salary']['currency'] == 'EUR':  # 'EUR' USD
             new_salary = data[el]['salary'][key] * get_course('EUR')
             data[el]['salary'][key] = new_salary

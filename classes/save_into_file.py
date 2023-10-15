@@ -52,7 +52,7 @@ class SaveInJson(SaveInFile):
         """
         :param file_json: из какого файла инфу извлекать
         :param criteria:  возможные критерии 0==имя message== ключевое слово,
-        1==зп message== рубли, доллары у вакансий с разных сайтов разные значения, 2==ссылка
+        1==зп message== рубли, доллары у вакансий с разных сайтов разные значения,
         :param message: название, название валюты, зп ссылка
         :return:
         """
@@ -73,13 +73,6 @@ class SaveInJson(SaveInFile):
                 if el["salary"] == None:
                     continue
                 if el["salary"]["currency"] == message:
-                    data.append(el)
-            return data
-
-        if criteria == 2:  # по ссылке
-            data = []
-            for el in res:
-                if el["url"] == message:
                     data.append(el)
             return data
 
