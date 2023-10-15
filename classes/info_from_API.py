@@ -1,37 +1,41 @@
-from abc import ABC,  abstractmethod
+from abc import ABC, abstractmethod
 import requests
 import os
 from dotenv import load_dotenv
 
 
-class GetAPI(ABC ):
+class GetAPI(ABC):
     @abstractmethod
     def get_json_info(self, params):
         pass
-class HeadHunter(GetAPI ):
+
+
+class HeadHunter(GetAPI):
     """
     для получения инфы с hh.ru
     """
-    params={'page': 0, 'area': 1,'per_page': 100} #area=1 по умолчанию это москва page= Нумерация идёт с нуля, по умолчанию выдаётся первая (нулевая) страница с 100 объектами на странице per_page= колво вакансий на стр
-    url='https://api.hh.ru/vacancies'
+    params = {'page': 0, 'area': 1,
+              'per_page': 100}  # area=1 по умолчанию это москва page= Нумерация идёт с нуля, по умолчанию выдаётся первая (нулевая) страница с 100 объектами на странице per_page= колво вакансий на стр
+    url = 'https://api.hh.ru/vacancies'
 
     @classmethod
-    def get_json_info(cls, parametrise=params ):
+    def get_json_info(cls, parametrise=params):
         """
         возвращыет словарь json с инфой, каждый элемент вакансия
         """
         list_info = []
         try:
-            for num in range(0,1) : # максимум 2000 экземпляров это до 20
-                parametrise['page']=num
+            for num in range(0, 1):  # максимум 2000 экземпляров это до 20
+                parametrise['page'] = num
                 html_text = requests.get(cls.url, parametrise).json()
-                for number in range(0, 100) :
+                for number in range(0, 100):
                     list_info.append(html_text['items'][number])
             return list_info
         except IndexError:
             return list_info
+
     @classmethod
-    def change_params(cls, text=None , area=None):
+    def change_params(cls, text=None, area=None):
         """
          меняет  params
         :param text: название вакансии
@@ -43,38 +47,39 @@ class HeadHunter(GetAPI ):
         if area != None:
             cls.params['area'] = area
 
-class Superjob(ABC ):
-    #__api_key: str = os.getenv('API_KEY')
-# order_field	<string:date|payment>	Сортировка: date - по дате публикации, payment - по сумме оклада. По умолчанию - date.
-# order_direction	<string:asc|desc>	Направление сортировки: asc - прямая, desc - обратная. По умолчанию - desc.
-# town	string|int	Название города или его ID
+
+class Superjob(ABC):
+    # __api_key: str = os.getenv('API_KEY')
+    # order_field	<string:date|payment>	Сортировка: date - по дате публикации, payment - по сумме оклада. По умолчанию - date.
+    # order_direction	<string:asc|desc>	Направление сортировки: asc - прямая, desc - обратная. По умолчанию - desc.
+    # town	string|int	Название города или его ID
     load_dotenv()
 
     headers = {
         'X-Api-App-Id': os.getenv('API_KEY'),
     }
     params = {
-        'town':'Москва',
+        'town': 'Москва',
         'keyword': '',
         'page': 0,
         'count': 100
     }
+
     @classmethod
     def get_info(cls, parametr=params):
         """выдает лист с вакансиях"""
         list_info = []
         try:
-            for el in range(0,1): # максимум 500 экземпляров это до 5
-                parametr['page'] =el
-                data = requests.get('https://api.superjob.ru/2.0/vacancies/', headers=cls.headers, params=cls.params).json()
-                 
-                for num in range(0,100):
+            for el in range(0, 1):  # максимум 500 экземпляров это до 5
+                parametr['page'] = el
+                data = requests.get('https://api.superjob.ru/2.0/vacancies/', headers=cls.headers,
+                                    params=cls.params).json()
+
+                for num in range(0, 100):
                     list_info.append(data["objects"][num])
             return list_info
         except IndexError:
             return list_info
-
-        #return list_info
 
     @classmethod
     def change(cls, keyword=None, town=None):
@@ -88,16 +93,3 @@ class Superjob(ABC ):
             cls.params['keyword'] = keyword
         if town != None:
             cls.params['town'] = town
-#load_dotenv()
-
-#my_env_var = os.getenv('API_KEY')
-#print(my_env_var )
-#HeadHunter.change_params('аналитик')
-#info=HeadHunter.get_json_info()
-#for el in range(0,100 ) :
-#    if info[el]['salary'] == None:
-#        continue
-#    print(info[el]['salary'] )
-
-
-

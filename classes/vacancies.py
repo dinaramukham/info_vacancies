@@ -1,5 +1,5 @@
 from classes.info_from_API import HeadHunter, Superjob
-
+from func import filtred_salary
 from func import filtred_salary
 
 class Vacancy():
@@ -8,6 +8,7 @@ class Vacancy():
         self.number_vacancy=number_vacancy     # vacancy=Vacancy( HeadHunter.get_json_info(),1,HeadHunter.params)
         self.params=params
         self.id = Vacancy.get_vacancy(data, self.number_vacancy)['id']
+
         try: # если HeadHunter
             self.name= Vacancy.get_vacancy(data, self.number_vacancy)["name"]
             self.requirement=Vacancy.get_vacancy(data, self.number_vacancy)["snippet"]["requirement" ]
@@ -24,10 +25,10 @@ class Vacancy():
                 self.salary['from'] = Vacancy.get_vacancy(data, self.number_vacancy)['salary']['from']
                 self.salary['to'] = Vacancy.get_vacancy(data, self.number_vacancy)['salary']['to']
                 self.salary['currency'] = Vacancy.get_vacancy(data, self.number_vacancy)['salary']['currency']
+
         except KeyError : # если Superjob
-            #self.id = Vacancy.get_vacancy(data, self.number_vacancy)['id']
             self.name = Vacancy.get_vacancy(data, self.number_vacancy)['profession']
-            self.requirement = None #Vacancy.get_vacancy(data, self.number_vacancy)["snippet"]["requirement"]
+            self.requirement = None
             self.responsibility = Vacancy.get_vacancy(data, self.number_vacancy)["candidat"]
             self.url = Vacancy.get_vacancy(data, self.number_vacancy)["link"]
             if Vacancy.get_vacancy(data, self.number_vacancy)['address'] == None:
@@ -38,6 +39,9 @@ class Vacancy():
             self.salary['from'] = Vacancy.get_vacancy(data, self.number_vacancy)["payment_from"]
             self.salary['to'] = Vacancy.get_vacancy(data, self.number_vacancy)["payment_to"]
             self.salary['currency'] = Vacancy.get_vacancy(data, self.number_vacancy)['currency']
+
+        except IndexError:
+            print('вакансии закончились')
     def __str__(self):
         return f"Название вакансии {self.name}, ссылка {self.url}, зп {self.salary}"
     def __repr__(self):
@@ -64,7 +68,9 @@ class Vacancy():
             raise  TypeError
         if two.salary==None:
             raise TypeError
-    def __lt__(self, other): # в рублях
+
+    def __lt__(self, other):
+        """ не забывать переводить в рубли с помощью get_course get_translet"""
         try:
             Vacancy.not_none(self, other)
         except ValueError:
@@ -97,6 +103,7 @@ class Vacancy():
                 return self.salary['from'] <= other.salary['from']
             if other.salary['from'] == None:
                 return self.salary['to'] <= other.salary['to']
+
     def __eg__(self, other):
         try:
             Vacancy.not_none(self, other)
@@ -115,21 +122,8 @@ class Vacancy():
     @classmethod
     def get_vacancy(cls, data, index=0):
         """ выдает одну вакансию по индексу """
-        return data[index]
+        try:
+            return data[index]
+        except IndexError:
+            return 'такого индекса нет'
 
-Superjob.change(keyword= 'разработчик')
-HeadHunter.change_params(text= 'аналитик')
-vacancy=Vacancy( Superjob.get_info()  ,6,Superjob.params)
-vacancy1=Vacancy( HeadHunter.get_json_info()   ,6,HeadHunter.params)
-#list0=[]
-#for el in range(0,10):
-#    vacancy=Vacancy(HeadHunter.get_json_info(), el, HeadHunter.params)
-#    vacancy.info_dict()
-#    list0.append(vacancy.info_dict())
-#list2=filtred_salary(list0, 'from' )
-
-#a=sorted(list2 ,key=lambda x: x['salary']['from'],reverse=False)
-#for el in range(len(a)) :
-#    print(a[el ]['salary']['from'])
-print(vacancy.info_dict()   )
-print(vacancy1.info_dict()   )
