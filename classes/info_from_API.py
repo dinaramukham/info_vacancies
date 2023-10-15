@@ -1,7 +1,9 @@
-import os
 from abc import ABC,  abstractmethod
-from API import API_KEY
 import requests
+import os
+from dotenv import load_dotenv
+
+
 class GetAPI(ABC ):
     @abstractmethod
     def get_json_info(self, params):
@@ -18,15 +20,16 @@ class HeadHunter(GetAPI ):
         """
         возвращыет словарь json с инфой, каждый элемент вакансия
         """
-        # добавить град
         list_info = []
-        for num in range(0,1) : # максимум 2000 экземпляров это до 20
-            parametrise['page']=num
-            html_text = requests.get(cls.url, parametrise).json()
-            for number in range(0, 100) :
-                list_info.append(html_text['items'][number])
-
-        return list_info
+        try:
+            for num in range(0,1) : # максимум 2000 экземпляров это до 20
+                parametrise['page']=num
+                html_text = requests.get(cls.url, parametrise).json()
+                for number in range(0, 100) :
+                    list_info.append(html_text['items'][number])
+            return list_info
+        except IndexError:
+            return list_info
     @classmethod
     def change_params(cls, text=None , area=None):
         """
@@ -45,8 +48,10 @@ class Superjob(ABC ):
 # order_field	<string:date|payment>	Сортировка: date - по дате публикации, payment - по сумме оклада. По умолчанию - date.
 # order_direction	<string:asc|desc>	Направление сортировки: asc - прямая, desc - обратная. По умолчанию - desc.
 # town	string|int	Название города или его ID
+    load_dotenv()
+
     headers = {
-        'X-Api-App-Id': API_KEY ,
+        'X-Api-App-Id': os.getenv('API_KEY'),
     }
     params = {
         'town':'Москва',
@@ -62,6 +67,7 @@ class Superjob(ABC ):
             for el in range(0,1): # максимум 500 экземпляров это до 5
                 parametr['page'] =el
                 data = requests.get('https://api.superjob.ru/2.0/vacancies/', headers=cls.headers, params=cls.params).json()
+                 
                 for num in range(0,100):
                     list_info.append(data["objects"][num])
             return list_info
@@ -82,9 +88,16 @@ class Superjob(ABC ):
             cls.params['keyword'] = keyword
         if town != None:
             cls.params['town'] = town
+#load_dotenv()
 
-
-
+#my_env_var = os.getenv('API_KEY')
+#print(my_env_var )
+#HeadHunter.change_params('аналитик')
+#info=HeadHunter.get_json_info()
+#for el in range(0,100 ) :
+#    if info[el]['salary'] == None:
+#        continue
+#    print(info[el]['salary'] )
 
 
 

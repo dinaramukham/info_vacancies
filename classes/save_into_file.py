@@ -23,15 +23,25 @@ class   SaveInJson(SaveInFile ):
         :param name_file: имя создаваемого файла
         :return:
         """
-        with open(name_file) as file:
-            data = json.load(file)
-        if type(vacanсy)==list:
-            for el in vacanсy:
-                data.append(el)
-        if type(vacanсy)==dict:
-            data.append(vacanсy )
-        with open(name_file, 'w') as file:
-            json.dump(data, file, indent=4 )
+        try:
+            with open(name_file) as file:
+                data = json.load(file)
+            if type(vacanсy)==list:
+                for el in vacanсy:
+                    data.append(el)
+            if type(vacanсy)==dict:
+                data.append(vacanсy )
+            with open(name_file, 'w') as file:
+                json.dump(data, file, indent=4 , ensure_ascii=False)
+        except FileNotFoundError:
+            data_=[]
+            if type(vacanсy)==list:
+                for el in vacanсy:
+                    data_.append(el)
+            if type(vacanсy)==dict:
+                data_.append(vacanсy )
+            with open(name_file, 'w') as file:
+                json.dump(data_, file, indent=4 , ensure_ascii=False)
 
     @classmethod
     def info_vacancy(cls, file_json, criteria=None, message=None  ):
@@ -82,7 +92,7 @@ class   SaveInJson(SaveInFile ):
 #    list0.append(vacancy.info_dict())
 #for el in list0:
 #    print(el )
-#SaveInJson.add_vacancy(list0 )
+#SaveInJson.add_vacancy(list0 , name_file= 'вакансии')
 #for el in SaveInJson.info_vacancy('vacancies.json'):
 #    print(el )
 #print(fuzz.partial_ratio('Здесь будем искать упоминание Cloud!', 'сloudуууу.'))

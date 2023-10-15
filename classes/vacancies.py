@@ -1,5 +1,6 @@
 from classes.info_from_API import HeadHunter, Superjob
-from func import printj
+
+from func import filtred_salary
 
 class Vacancy():
     """важно следить за HeadHunter.params, при их замене меняется вывод HeadHunter.get_json_info()"""
@@ -116,13 +117,19 @@ class Vacancy():
         """ выдает одну вакансию по индексу """
         return data[index]
 
-#Superjob.change(keyword= 'разработчик')
-#HeadHunter.change_params(text= 'аналитик')
-#vacancy=Vacancy( Superjob.get_info()  ,1,Superjob.params)
+Superjob.change(keyword= 'разработчик')
+HeadHunter.change_params(text= 'аналитик')
+vacancy=Vacancy( Superjob.get_info()  ,6,Superjob.params)
+vacancy1=Vacancy( HeadHunter.get_json_info()   ,6,HeadHunter.params)
 #list0=[]
-#for el in range(0,3):
+#for el in range(0,10):
 #    vacancy=Vacancy(HeadHunter.get_json_info(), el, HeadHunter.params)
-#    vacancy.dict_json()
+#    vacancy.info_dict()
 #    list0.append(vacancy.info_dict())
-#for el in list0:
-#    print(el )
+#list2=filtred_salary(list0, 'from' )
+
+#a=sorted(list2 ,key=lambda x: x['salary']['from'],reverse=False)
+#for el in range(len(a)) :
+#    print(a[el ]['salary']['from'])
+print(vacancy.info_dict()   )
+print(vacancy1.info_dict()   )
