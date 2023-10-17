@@ -2,7 +2,7 @@ from abc import ABC, abstractmethod
 import requests
 import os
 from dotenv import load_dotenv
-from func import printj
+#from func import printj
 
 class GetAPI(ABC):
     @abstractmethod
@@ -93,5 +93,3 @@ class Superjob(ABC):
             cls.params['keyword'] = keyword
         if town != None:
             cls.params['town'] = town
-Superjob.change('Python')
-print(Superjob.get_info())
