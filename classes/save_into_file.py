@@ -56,6 +56,7 @@ class SaveInJson(SaveInFile):
         :param message: название, название валюты, зп ссылка
         :return:
         """
+        
         with open(file_json) as file:
             res = json.load(file)
         if criteria == None:
