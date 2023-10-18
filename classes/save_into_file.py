@@ -1,7 +1,5 @@
 from abc import ABC, abstractmethod
 from thefuzz import fuzz
-from classes.info_from_API import HeadHunter
-from vacancies import Vacancy
 import json
 
 
@@ -27,22 +25,22 @@ class SaveInJson(SaveInFile):
         :param name_file: имя создаваемого файла
         :return:
         """
-        try: # если файл существует
+        try:  # если файл существует
             with open(name_file) as file:
                 data = json.load(file)
-            if type(vacanсy) == list:
-                for el in vacanсy:
-                    data.append(el)
-            if type(vacanсy) == dict:
+            if isinstance(vacanсy, list):
+                for one_vacanсy in vacanсy:
+                    data.append(one_vacanсy)
+            if isinstance(vacanсy, dict):
                 data.append(vacanсy)
             with open(name_file, 'w') as file:
                 json.dump(data, file, indent=4, ensure_ascii=False)
-        except FileNotFoundError: # если не существует создается новый
+        except FileNotFoundError:  # если не существует создается новый
             data_ = []
-            if type(vacanсy) == list:
-                for el in vacanсy:
-                    data_.append(el)
-            if type(vacanсy) == dict:
+            if isinstance(vacanсy, list):
+                for one_vacanсy in vacanсy:
+                    data_.append(one_vacanсy)
+            if isinstance(vacanсy, dict):
                 data_.append(vacanсy)
             with open(name_file, 'w') as file:
                 json.dump(data_, file, indent=4, ensure_ascii=False)
@@ -56,37 +54,36 @@ class SaveInJson(SaveInFile):
         :param message: название, название валюты, зп ссылка
         :return:
         """
-        
+
         with open(file_json) as file:
-            res = json.load(file)
-        if criteria == None:
-            return res
+            data = json.load(file)
+        if criteria is None:
+            return data
         if criteria == 0:  # по имени
             data = []
-            for el in res:
-                if fuzz.partial_ratio(message, el['name']) >= 50:
-                    data.append(el)
+            for one_vacanсy in data:
+                if fuzz.partial_ratio(message, one_vacanсy['name']) >= 50:
+                    data.append(one_vacanсy)
             return data
 
         if criteria == 1:  # salary зп в рублях или не
             data = []
-            for el in res:
-                if el["salary"] == None:
+            for one_vacanсy in data:
+                if one_vacanсy["salary"] is None:
                     continue
-                if el["salary"]["currency"] == message:
-                    data.append(el)
+                if one_vacanсy["salary"]["currency"] == message:
+                    data.append(one_vacanсy)
             return data
 
     @classmethod
-    def del_info_vacancy(cls, element, file_name):
+    def del_info_vacancy(cls, url_vacancy, file_name):
         """ удаления информации о вакансиях по url"""
         with open(file_name) as file:
-            res = json.load(file)
-        for el in range(len(res)):
-            if res[el]["url"] == element.strip():
-                res.pop(el)
+            data = json.load(file)
+        for one_vacanсy in range(len(data)):
+            if data[one_vacanсy]["url"] == url_vacancy:
+                data.pop(one_vacanсy)
                 break
         with open(file_name, 'w') as file:
-            json.dump(res, file, indent=4)
-            return f'вакансия {element} удалена'
-
+            json.dump(data, file, indent=4)
+            return f'вакансия {url_vacancy} удалена'

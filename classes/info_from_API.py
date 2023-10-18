@@ -2,7 +2,7 @@ from abc import ABC, abstractmethod
 import requests
 import os
 from dotenv import load_dotenv
-#from func import printj
+
 
 class GetAPI(ABC):
     @abstractmethod
@@ -14,8 +14,8 @@ class HeadHunter(GetAPI):
     """
     для получения инфы с hh.ru
     """
-    params = {'page': 0, 'area': 1,
-              'per_page': 100}  # area=1 по умолчанию это москва page= Нумерация идёт с нуля, по умолчанию выдаётся первая (нулевая) страница с 100 объектами на странице per_page= колво вакансий на стр
+    params = {'page': 0, 'area': 1,  # area=1 по умолчанию это москва
+              'per_page': 100}  # page= Нумерация идёт с нуля, по умолчанию выдаётся первая (нулевая) страница с 100 объектами на странице per_page= колво вакансий на стр
     url = 'https://api.hh.ru/vacancies'
 
     @classmethod
@@ -56,7 +56,7 @@ class Superjob(ABC):
     load_dotenv()
 
     headers = {
-        'X-Api-App-Id': os.getenv('API_KEY'), #
+        'X-Api-App-Id': os.getenv('API_KEY'),
     }
     params = {
         'town': 'Москва',
