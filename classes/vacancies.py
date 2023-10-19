@@ -41,7 +41,6 @@ class Vacancy():
         except IndexError:
             print('вакансии закончились')
 
-
     def __str__(self):
         return f"Название вакансии {self.name}, ссылка {self.url}, зп {self.salary}"
 
@@ -115,11 +114,10 @@ class Vacancy():
         else:
             if self.salary['from'] is None and other.salary['from'] is None:
                 return self.salary['to'] == other.salary['to']
-            if self.salary['from'] is None or other.salary['from'] is None :
+            if self.salary['from'] is None or other.salary['from'] is None:
                 return None  # сравнение некоректно, т.к одно из значений None
-            if self.salary['from'] is not None and other.salary['from'] is not None: # if not self.salary['from'] is None and not other.salary['from'] is None:#
+            if self.salary['from'] is not None and other.salary['from'] is not None:  # if not self.salary['from'] is None and not other.salary['from'] is None:#
                 return self.salary['from'] == other.salary['from']
-
 
     @classmethod
     def get_vacancy(cls, data, index=0):

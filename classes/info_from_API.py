@@ -42,9 +42,9 @@ class HeadHunter(GetAPI):
         :param area:  по умолчанию ==1 это москва, вводить ТОЛЬКО цифру,  остальные города https://api.hh.ru/areas
         :return:
         """
-        if text != None:
+        if text is not None:
             cls.params['text'] = f'NAME:{text}'
-        if area != None:
+        if area is not None:
             cls.params['area'] = area
 
 
@@ -89,7 +89,7 @@ class Superjob(ABC):
         :return:
         """
         """ меняет параметр класса: params"""
-        if keyword != None:
+        if keyword is not None:
             cls.params['keyword'] = keyword
-        if town != None:
+        if town is not None:
             cls.params['town'] = town

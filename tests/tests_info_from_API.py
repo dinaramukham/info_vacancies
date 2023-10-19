@@ -23,7 +23,6 @@ def tests_hh_get_json_info(hh_analyst):
     assert isinstance(HeadHunter.get_json_info(), list)
 
 
-
 @pytest.fixture()
 def sj_analyst():
     return Superjob.change(keyword='аналитик')
@@ -48,5 +47,5 @@ def tests_sj_change_town(sj_analyst):
     assert Superjob.params['town'] == 'Самара'
 
 
-def tests_sj_get_info(sj_analyst ):
+def tests_sj_get_info(sj_analyst):
     assert isinstance(Superjob.get_info(), list)

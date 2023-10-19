@@ -1,5 +1,5 @@
 from classes.vacancies import Vacancy
-from classes.info_from_API import HeadHunter,Superjob
+from classes.info_from_API import HeadHunter, Superjob
 import pytest
 
 

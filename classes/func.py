@@ -35,7 +35,7 @@ def filtred_salary(dict_: dict, texts: str):
     list_ = []
     text = texts.strip()
     for el in range(len(dict_)):
-        if dict_[el]['salary'] == None or dict_[el]['salary'][text] == None:
+        if dict_[el]['salary'] is None or dict_[el]['salary'][text] is None:
             continue
         if isinstance(dict_[el]['salary'][text], int):
             list_.append(dict_[el])
@@ -43,7 +43,7 @@ def filtred_salary(dict_: dict, texts: str):
 
 
 def get_translet(data, key):
-    copy_data=data[:]
+    copy_data = data[:]
     for el in range(len(copy_data)):
         if copy_data[el]['salary']['currency'] == 'EUR':  # 'EUR' USD
             new_salary = copy_data[el]['salary'][key] * get_course('EUR')
